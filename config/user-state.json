@@ -1,0 +1,20 @@
+﻿{
+  "SelectedTab": 0,
+  "Machines": [
+    {
+      "Name": "MMAPI120",
+      "LogPath": "C:\\Users\\s7828\\Downloads\\log\\205\\OTP_1.log",
+      "MesLogPath": "C:\\Users\\s7828\\Downloads\\log\\205\\MES_1.log",
+      "Enabled": true
+    },
+    {
+      "Name": "MMAPI110",
+      "LogPath": "C:\\Users\\s7828\\Downloads\\log\\205\\OTP_1.log",
+      "MesLogPath": "C:\\Users\\s7828\\Downloads\\log\\205\\MES_1.log",
+      "Enabled": true
+    }
+  ],
+  "AutoScroll": true,
+  "SoundAlert": false,
+  "Language": "vi"
+}

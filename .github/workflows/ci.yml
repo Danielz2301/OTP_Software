@@ -1,0 +1,28 @@
+name: CI (.NET 10 & Tests)
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  dotnet:
+    name: .NET 10 Build & xUnit Tests
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 10 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+          include-prerelease: true
+
+      - name: Restore dependencies
+        run: dotnet restore OTPSoftware.sln
+
+      - name: Build Solution (Release)
+        run: dotnet build OTPSoftware.sln --configuration Release --no-restore -warnaserror
+
+      - name: Run xUnit Tests (Release)
+        run: dotnet test OTPSoftware.sln --configuration Release --no-build --verbosity normal

@@ -1,0 +1,452 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+
+    <!-- ================================================================ -->
+    <!-- WINDOW & HEADER                                                  -->
+    <!-- ================================================================ -->
+    <sys:String x:Key="Window_Title">Giám sát Log OTP - Bảng điều khiển đa máy thời gian thực</sys:String>
+    <sys:String x:Key="Header_AppTitle">GIÁM SÁT LOG OTP</sys:String>
+    <sys:String x:Key="Header_LiveBadge">60 FPS TRỰC TIẾP</sys:String>
+    <sys:String x:Key="Header_SubtitleDefault">Giám sát song song đa máy</sys:String>
+    <sys:String x:Key="Header_SubtitleMachines">Giám sát song song đa máy ({0} máy: {1})</sys:String>
+    <sys:String x:Key="Header_OtpLabel">OTP:</sys:String>
+    <sys:String x:Key="Header_SelectOtpTooltip">Chọn file OTP_1.log</sys:String>
+    <sys:String x:Key="Header_OtpBrowseBtn">OTP...</sys:String>
+    <sys:String x:Key="Header_MesLabel">MES:</sys:String>
+    <sys:String x:Key="Header_SelectMesTooltip">Chọn file MES_1.log</sys:String>
+    <sys:String x:Key="Header_MesBrowseBtn">MES...</sys:String>
+    <sys:String x:Key="Header_ReadLogTooltip">Đọc log OTP hiện tại và các file xoay vòng (áp dụng khoảng thời gian Từ/Đến trực tiếp từ ổ đĩa)</sys:String>
+    <sys:String x:Key="Header_ReadLogBtn">Đọc Log</sys:String>
+    <sys:String x:Key="Header_LangTooltip">Chuyển đổi ngôn ngữ giao diện (English / 中文 / Tiếng Việt)</sys:String>
+
+    <!-- ================================================================ -->
+    <!-- 5 KPI CARDS                                                      -->
+    <!-- ================================================================ -->
+    <sys:String x:Key="Kpi_TotalUnits">TỔNG SỐ LƯỢNG</sys:String>
+    <sys:String x:Key="Kpi_Scope">PHẠM VI</sys:String>
+    <sys:String x:Key="Kpi_PassOk">ĐẠT (OK)</sys:String>
+    <sys:String x:Key="Kpi_OkBadge">OK</sys:String>
+    <sys:String x:Key="Kpi_WithinSpec">● Đạt chuẩn quang học</sys:String>
+    <sys:String x:Key="Kpi_FailNg">LỖI (NG)</sys:String>
+    <sys:String x:Key="Kpi_DefectBadge">LỖI</sys:String>
+    <sys:String x:Key="Kpi_RejectedPanels">● Panel không đạt</sys:String>
+    <sys:String x:Key="Kpi_DefectRate">TỶ LỆ LỖI</sys:String>
+    <sys:String x:Key="Kpi_FpyPrefix" xml:space="preserve">FPY </sys:String>
+    <sys:String x:Key="Kpi_YieldStatusPrefix" xml:space="preserve">Trạng thái: </sys:String>
+    <sys:String x:Key="Kpi_DefectDetails">CHI TIẾT LỖI OTP</sys:String>
+    <sys:String x:Key="Kpi_ByCategory">THEO NHÓM LỖI</sys:String>
+    <sys:String x:Key="Kpi_NgRateFormat">Tỷ lệ NG: {0}</sys:String>
+    <sys:String x:Key="Kpi_ShiftTargetFormat">Mục tiêu: {0:N0} / {1:N0} ({2:F1}%)</sys:String>
+    <sys:String x:Key="Kpi_AlertNormal">Bình thường</sys:String>
+    <sys:String x:Key="Kpi_AlertWarning">Cảnh báo</sys:String>
+    <sys:String x:Key="Kpi_AlertCritical">Nghiêm trọng</sys:String>
+
+    <!-- ================================================================ -->
+    <!-- ALERT BANNER                                                     -->
+    <!-- ================================================================ -->
+    <sys:String x:Key="Alert_DismissBtn">Đóng</sys:String>
+    <sys:String x:Key="Alert_NewDefectTitle">CẢNH BÁO LỖI MỚI:</sys:String>
+    <sys:String x:Key="Alert_NewDefectDefault">Phát hiện lỗi NG...</sys:String>
+    <sys:String x:Key="Alert_NewDefectMsgFormat">[{0}] [{1}] PMNT: {2} | Panel: {3} | Lỗi: {4}</sys:String>
+    <sys:String x:Key="Alert_ConsecNgTitleFormat">BÁO ĐỘNG NG LIÊN TIẾP ({0}x):</sys:String>
+    <sys:String x:Key="Alert_ConsecNgMsgFormat">[{0}] [{1}] PMNT: {2} ({3} lần NG liên tiếp!) | Panel: {4} | Lỗi: {5} — DỪNG &amp; KIỂM TRA JIG!</sys:String>
+
+    <!-- ================================================================ -->
+    <!-- FILTER BAR & ACTION BUTTONS                                      -->
+    <!-- ================================================================ -->
+    <sys:String x:Key="Filter_Machine">Máy:</sys:String>
+    <sys:String x:Key="Filter_AllMachines">Tất cả máy</sys:String>
+    <sys:String x:Key="Filter_OnlyMachineFormat">Chỉ {0}</sys:String>
+    <sys:String x:Key="Filter_Status">Trạng thái:</sys:String>
+    <sys:String x:Key="Filter_StatusAll">Tất cả</sys:String>
+    <sys:String x:Key="Filter_StatusNgOnly">Chỉ NG (Lỗi)</sys:String>
+    <sys:String x:Key="Filter_StatusOkOnly">Chỉ OK (Đạt)</sys:String>
+    <sys:String x:Key="Filter_Pmnt">PMNT:</sys:String>
+    <sys:String x:Key="Filter_PmntTooltip">Ví dụ: PMNT1012A hoặc 1012 (Tự động lọc khi nhập)</sys:String>
+    <sys:String x:Key="Filter_Panel">Panel:</sys:String>
+    <sys:String x:Key="Filter_PanelTooltip">Nhập một phần mã Panel, VD: TL6869 (Tự động lọc)</sys:String>
+    <sys:String x:Key="Filter_From">Từ:</sys:String>
+    <sys:String x:Key="Filter_FromDateTooltip">Chọn ngày bắt đầu (Trống = không giới hạn; nhấn Đọc Log để tải lịch sử cũ theo ngày)</sys:String>
+    <sys:String x:Key="Filter_StartHourTooltip">Giờ bắt đầu (00-23)</sys:String>
+    <sys:String x:Key="Filter_StartMinTooltip">Phút bắt đầu (00-59)</sys:String>
+    <sys:String x:Key="Filter_To">Đến:</sys:String>
+    <sys:String x:Key="Filter_ToDateTooltip">Chọn ngày kết thúc (Trống = không giới hạn; nhấn Đọc Log để tải lịch sử cũ theo ngày)</sys:String>
+    <sys:String x:Key="Filter_EndHourTooltip">Giờ kết thúc (00-23)</sys:String>
+    <sys:String x:Key="Filter_EndMinTooltip">Phút kết thúc (00-59)</sys:String>
+    <sys:String x:Key="Filter_ClearTooltip">Xóa toàn bộ bộ lọc tìm kiếm và ngày/giờ</sys:String>
+    <sys:String x:Key="Filter_ClearBtn">Xóa lọc</sys:String>
+    <sys:String x:Key="Filter_StartRealtime">Bật Thời gian thực</sys:String>
+    <sys:String x:Key="Filter_StopRealtime">Dừng Thời gian thực</sys:String>
+    <sys:String x:Key="Filter_ExportCsvBtn">Xuất CSV</sys:String>
+    <sys:String x:Key="Filter_ShiftReportTooltip">Xuất báo cáo tổng hợp &amp; chi tiết ca hiện tại (Ca ngày 08:30-20:30 / Ca đêm 20:30-08:30)</sys:String>
+    <sys:String x:Key="Filter_ShiftReportBtn">Báo cáo Ca</sys:String>
+    <sys:String x:Key="Filter_WallboardTooltip">Bật/Tắt chế độ Màn hình lớn nhà xưởng Wallboard (Nhấn F11 hoặc ESC để thoát)</sys:String>
+    <sys:String x:Key="Filter_WallboardBtn">Wallboard</sys:String>
+    <sys:String x:Key="Filter_ShowingZero">Hiển thị: 0 bản ghi</sys:String>
+    <sys:String x:Key="Filter_ShowingFormat">Hiển thị: {0:N0} / {1:N0} bản ghi</sys:String>
+    <sys:String x:Key="Filter_ShowingTrimmedFormat">Hiển thị: {0:N0} / {1:N0} trong RAM (đã lược {2:N0} bản ghi cũ)</sys:String>
+
+    <!-- ================================================================ -->
+    <!-- TAB 1: LOG RECORDS                                               -->
+    <!-- ================================================================ -->
+    <sys:String x:Key="Tab_LogRecords">Bản ghi Log</sys:String>
+    <sys:String x:Key="Tab_AutoScroll">Tự cuộn đến bản ghi mới nhất</sys:String>
+    <sys:String x:Key="Tab_SoundAlert">Phát âm báo khi có lỗi NG</sys:String>
+    <sys:String x:Key="Tab_GridHintPrefix">Nhấp đúp ô để sao chép  •  Chuột phải để thao tác  •</sys:String>
+    <sys:String x:Key="Tab_GridHintSuffix">để chép dòng đã chọn</sys:String>
+    <sys:String x:Key="Col_Source">Máy</sys:String>
+    <sys:String x:Key="Col_Timestamp">Thời gian</sys:String>
+    <sys:String x:Key="Col_PmntCode">Mã PMNT</sys:String>
+    <sys:String x:Key="Col_Run">Lần</sys:String>
+    <sys:String x:Key="Col_PanelName">Mã Panel</sys:String>
+    <sys:String x:Key="Col_BluName">Mã Blu</sys:String>
+    <sys:String x:Key="Col_Status">Trạng thái</sys:String>
+    <sys:String x:Key="Col_MesDetails">Chi tiết MES</sys:String>
+    <sys:String x:Key="Col_ViewDetailsTooltip">Xem chi tiết thông số OTPDEFECTCODE &amp; OTPDEFECTVALUE và ảnh camera</sys:String>
+    <sys:String x:Key="Col_ViewDetailsBtn">Xem chi tiết</sys:String>
+
+    <!-- ================================================================ -->
+    <!-- TAB 2: FAULTY PMNT STATISTICS                                    -->
+    <!-- ================================================================ -->
+    <sys:String x:Key="Tab_PmntStats">Thống kê PMNT lỗi</sys:String>
+    <sys:String x:Key="Pmnt_ColATitle">CỘT PMNT-A (CÓ LỖI)</sys:String>
+    <sys:String x:Key="Pmnt_ColASubtitle">Các PMNT tận cùng bằng 'A' phát sinh lỗi (Chuột phải để chép hoặc lọc)</sys:String>
+    <sys:String x:Key="Pmnt_ColBTitle">CỘT PMNT-B (CÓ LỖI)</sys:String>
+    <sys:String x:Key="Pmnt_ColBSubtitle">Các PMNT tận cùng bằng 'B' phát sinh lỗi (Chuột phải để chép hoặc lọc)</sys:String>
+    <sys:String x:Key="Pmnt_ColOtherTitle">PMNT KHÁC (CÓ LỖI)</sys:String>
+    <sys:String x:Key="Pmnt_CopyCode">Sao chép mã PMNT</sys:String>
+    <sys:String x:Key="Pmnt_FilterByThis">Lọc danh sách theo PMNT này</sys:String>
+    <sys:String x:Key="Pmnt_ColDefectCount">Tổng lỗi</sys:String>
+    <sys:String x:Key="Pmnt_ColCurrentStreak">Liên tiếp hiện tại</sys:String>
+    <sys:String x:Key="Pmnt_ColMaxStreak">Liên tiếp tối đa</sys:String>
+    <sys:String x:Key="Pmnt_ZeroCount">(0 PMNT)</sys:String>
+    <sys:String x:Key="Pmnt_CountSummaryFormat">({0} PMNT - {1} Lỗi)</sys:String>
+
+    <!-- ================================================================ -->
+    <!-- TAB 3: DEFECT TREND CHART                                        -->
+    <!-- ================================================================ -->
+    <sys:String x:Key="Tab_DefectChart">Biểu đồ xu hướng lỗi</sys:String>
+    <sys:String x:Key="Chart_Mode">Chế độ:</sys:String>
+    <sys:String x:Key="Chart_TimelineTooltip">Biểu đồ lũy kế lỗi theo thời gian của từng PMNT</sys:String>
+    <sys:String x:Key="Chart_TimelineBtn">Lũy kế</sys:String>
+    <sys:String x:Key="Chart_ParetoTooltip">Biểu đồ Pareto Top 10 PMNT lỗi nhiều nhất (Quy tắc 80/20)</sys:String>
+    <sys:String x:Key="Chart_ParetoBtn">Pareto 80/20</sys:String>
+    <sys:String x:Key="Chart_HourlyTooltip">Xu hướng sản lượng &amp; tỷ lệ NG theo từng giờ</sys:String>
+    <sys:String x:Key="Chart_HourlyBtn">Theo giờ</sys:String>
+    <sys:String x:Key="Chart_ModeTimeline">Lũy kế theo thời gian</sys:String>
+    <sys:String x:Key="Chart_ModePareto">Biểu đồ Pareto (80/20)</sys:String>
+    <sys:String x:Key="Chart_ModeHourly">Xu hướng theo giờ</sys:String>
+    <sys:String x:Key="Chart_PmntGroup">Nhóm PMNT:</sys:String>
+    <sys:String x:Key="Chart_GroupAll">Tất cả (A / B / Khác)</sys:String>
+    <sys:String x:Key="Chart_GroupA">Chỉ PMNT-A</sys:String>
+    <sys:String x:Key="Chart_GroupB">Chỉ PMNT-B</sys:String>
+    <sys:String x:Key="Chart_GroupOther">Chỉ nhóm Khác</sys:String>
+    <sys:String x:Key="Chart_DefectType">Loại lỗi:</sys:String>
+    <sys:String x:Key="Chart_DefectAll">Tất cả lỗi</sys:String>
+    <sys:String x:Key="Chart_DefectXylv">Chỉ XYLV</sys:String>
+    <sys:String x:Key="Chart_DefectPowerOn">Chỉ POWERON</sys:String>
+    <sys:String x:Key="Chart_DefectPowerOff">Chỉ POWEROFF</sys:String>
+    <sys:String x:Key="Chart_DefectFlicker">Chỉ FLICKER</sys:String>
+    <sys:String x:Key="Chart_ConnectLines">Nối đường</sys:String>
+    <sys:String x:Key="Chart_ShowLabels">Hiện nhãn PMNT</sys:String>
+    <sys:String x:Key="Chart_Zoom">Thu phóng:</sys:String>
+    <sys:String x:Key="Chart_ZoomOutTooltip">Thu nhỏ (Hoặc cuộn chuột xuống trên biểu đồ)</sys:String>
+    <sys:String x:Key="Chart_ZoomInTooltip">Phóng to (Hoặc cuộn chuột lên trên biểu đồ)</sys:String>
+    <sys:String x:Key="Chart_FitFrameTooltip">Đặt lại thu phóng về 100% vừa khung hình</sys:String>
+    <sys:String x:Key="Chart_FitFrameBtn">Vừa khung</sys:String>
+    <sys:String x:Key="Chart_InteractionHint">Cuộn: Thu phóng  •  Kéo: Di chuyển  •  Nhấp điểm: Lọc PMNT</sys:String>
+    <sys:String x:Key="Chart_NoDataRange">Không có dữ liệu lỗi (NG) trong phạm vi lọc hiện tại</sys:String>
+    <sys:String x:Key="Chart_SummaryZero">Tổng: 0 lỗi</sys:String>
+    <sys:String x:Key="Chart_SummaryFormat">Tổng: {0:N0} lỗi / {1:N0} PMNT{2}</sys:String>
+    <sys:String x:Key="Chart_SummaryTopFormat"> | Nhiều nhất: {0} ({1:N0} lỗi)</sys:String>
+    <sys:String x:Key="Chart_ParetoSummaryZero">Pareto lỗi: 0 lỗi</sys:String>
+    <sys:String x:Key="Chart_ParetoSummaryFormat">Pareto lỗi: {0:N0} lỗi trên {1} mục{2}</sys:String>
+    <sys:String x:Key="Chart_ParetoCutoffInfoFormat"> | Mốc 80%: Top {0}</sys:String>
+    <sys:String x:Key="Chart_HourlySummaryZero">Xu hướng giờ: Ca hiện tại chưa có dữ liệu</sys:String>
+    <sys:String x:Key="Chart_HourlySummaryFormat">Xu hướng giờ: {0:N0} kiểm tra | {1:N0} NG ({2:F2}%) | Đỉnh {3:N0} tấm/giờ</sys:String>
+    <sys:String x:Key="Chart_AxisCumulativeY">Số lượng lỗi (Lũy kế)</sys:String>
+    <sys:String x:Key="Chart_AxisTimelineSingleDayFormat">Thời gian phát sinh lỗi (Ngày: {0:yyyy-MM-dd})</sys:String>
+    <sys:String x:Key="Chart_AxisTimelineRangeFormat">Thời gian phát sinh lỗi ({0:yyyy-MM-dd} - {1:yyyy-MM-dd})</sys:String>
+    <sys:String x:Key="Chart_ParetoCutoffTag">Mốc 80%</sys:String>
+    <sys:String x:Key="Chart_ParetoYLeft">Số lỗi (Cột)</sys:String>
+    <sys:String x:Key="Chart_ParetoYRight">Tỷ lệ lũy kế % (Đường)</sys:String>
+    <sys:String x:Key="Chart_ParetoXAxis">Top mã PMNT gây lỗi nhiều nhất (Quy tắc Pareto 80/20)</sys:String>
+    <sys:String x:Key="Chart_HourlyYLeft">Sản lượng (Tấm/Giờ)</sys:String>
+    <sys:String x:Key="Chart_HourlyYRight">Tỷ lệ NG % (Đường)</sys:String>
+    <sys:String x:Key="Chart_HourlyXAxis">Giờ sản xuất</sys:String>
+    <sys:String x:Key="Chart_TooltipFooter">Nhấp trái: Lọc/Bỏ lọc PMNT  |  Nhấp phải: Xem trong danh sách Log</sys:String>
+    <sys:String x:Key="Chart_TooltipHeaderFormat">Mã PMNT: {0}  (Lỗi thứ {1} / Tổng {2} lỗi)</sys:String>
+    <sys:String x:Key="Chart_TooltipTimestampLabel">Thời gian</sys:String>
+    <sys:String x:Key="Chart_TooltipDefectLabel">Lỗi OTP</sys:String>
+    <sys:String x:Key="Chart_TooltipMachineLabel">Máy</sys:String>
+    <sys:String x:Key="Chart_TooltipPanelLabel">Mã Panel</sys:String>
+    <sys:String x:Key="Chart_TooltipBluLabel">Mã Blu</sys:String>
+    <sys:String x:Key="Chart_ZeroShiftTitle">BIỂU ĐỒ CA — LŨY KẾ LỖI THEO THỜI GIAN</sys:String>
+    <sys:String x:Key="Chart_ZeroShiftSubtitleFormat">Ghi nhận 0 lỗi trong ca hiện tại (đã kiểm tra {0:N0} tấm)</sys:String>
+
+    <!-- ================================================================ -->
+    <!-- FOOTER & REALTIME STATUS                                         -->
+    <!-- ================================================================ -->
+    <sys:String x:Key="Footer_Cameras">Camera:</sys:String>
+    <sys:String x:Key="Footer_ProbeCamerasTooltip">Kiểm tra kết nối mạng SMB tới các camera ngay</sys:String>
+    <sys:String x:Key="Footer_RtStopped">Thời gian thực: Đã dừng</sys:String>
+    <sys:String x:Key="Footer_RtRunning">Thời gian thực: Đang chạy song song (2s)</sys:String>
+    <sys:String x:Key="Footer_FileNotLoaded">File: Chưa tải</sys:String>
+
+    <!-- ================================================================ -->
+    <!-- WALLBOARD (F11 KIOSK OVERLAY)                                    -->
+    <!-- ================================================================ -->
+    <sys:String x:Key="Wall_Title">BẢNG GIÁM SÁT XƯỞNG OTP</sys:String>
+    <sys:String x:Key="Wall_IntervalTooltip">Đổi chu kỳ tự động chuyển trang giữa 15 giây và 30 giây</sys:String>
+    <sys:String x:Key="Wall_IntervalBtn">15s / 30s</sys:String>
+    <sys:String x:Key="Wall_NextViewTooltip">Chuyển sang màn hình phân tích kế tiếp ngay</sys:String>
+    <sys:String x:Key="Wall_NextViewBtn">Trang tiếp</sys:String>
+    <sys:String x:Key="Wall_ExitBtn">Thoát Wallboard</sys:String>
+    <sys:String x:Key="Wall_TotalTested">TỔNG KIỂM TRA</sys:String>
+    <sys:String x:Key="Wall_FpyTitle">TỶ LỆ ĐẠT ĐẦU (FPY)</sys:String>
+    <sys:String x:Key="Wall_DefectBreakdown">PHÂN BỔ LỖI OTP</sys:String>
+    <sys:String x:Key="Wall_Slide1Tooltip">Trang 1: Pareto 80/20</sys:String>
+    <sys:String x:Key="Wall_Slide2Tooltip">Trang 2: Xu hướng theo giờ</sys:String>
+    <sys:String x:Key="Wall_Slide3Tooltip">Trang 3: Lũy kế lỗi theo thời gian</sys:String>
+    <sys:String x:Key="Wall_Slide4Tooltip">Trang 4: Xếp hạng PMNT A/B</sys:String>
+    <sys:String x:Key="Wall_Slide1Btn">1. Pareto 80/20</sys:String>
+    <sys:String x:Key="Wall_Slide2Btn">2. Theo giờ</sys:String>
+    <sys:String x:Key="Wall_Slide3Btn">3. Lũy kế lỗi</sys:String>
+    <sys:String x:Key="Wall_Slide4Btn">4. Top PMNT</sys:String>
+    <sys:String x:Key="Wall_Slide1Header">[1/4] Pareto lỗi trọng tâm (80/20)</sys:String>
+    <sys:String x:Key="Wall_Slide2Header">[2/4] Sản lượng &amp; tỷ lệ NG theo giờ</sys:String>
+    <sys:String x:Key="Wall_Slide3Header">[3/4] Lũy kế lỗi theo PMNT</sys:String>
+    <sys:String x:Key="Wall_Slide4Header">[4/4] Xếp hạng PMNT lỗi (A / B / Khác)</sys:String>
+    <sys:String x:Key="Wall_NoDataScope">Không có dữ liệu lỗi (NG) trong phạm vi hiện tại</sys:String>
+    <sys:String x:Key="Wall_PmntARanking">XẾP HẠNG LỖI PMNT-A</sys:String>
+    <sys:String x:Key="Wall_PmntBRanking">XẾP HẠNG LỖI PMNT-B</sys:String>
+    <sys:String x:Key="Wall_PmntOtherRanking">XẾP HẠNG LỖI PMNT KHÁC</sys:String>
+    <sys:String x:Key="Wall_ColDefects">Số lỗi</sys:String>
+    <sys:String x:Key="Wall_ColCurStreak">Liên tiếp</sys:String>
+    <sys:String x:Key="Wall_DayShiftFormat">CA NGÀY ({0:hh\:mm} - {1:hh\:mm})</sys:String>
+    <sys:String x:Key="Wall_NightShiftFormat">CA ĐÊM ({0:hh\:mm} - {1:hh\:mm})</sys:String>
+    <sys:String x:Key="Wall_AutoRotateOnFormat">Tự chuyển: BẬT ({0}s)</sys:String>
+    <sys:String x:Key="Wall_AutoRotatePaused">Tự chuyển: TẠM DỪNG</sys:String>
+
+    <!-- ================================================================ -->
+    <!-- LIVE NG UNIT SPOTLIGHT                                           -->
+    <!-- ================================================================ -->
+    <sys:String x:Key="Spot_Title">PANEL LỖI NG MỚI NHẤT</sys:String>
+    <sys:String x:Key="Spot_StreakPrefix" xml:space="preserve">Liên tiếp: </sys:String>
+    <sys:String x:Key="Spot_ColGroup">Nhóm</sys:String>
+    <sys:String x:Key="Spot_ColParam">Thông số</sys:String>
+    <sys:String x:Key="Spot_ColValue">Giá trị</sys:String>
+    <sys:String x:Key="Spot_ColSpec">Tiêu chuẩn</sys:String>
+    <sys:String x:Key="Spot_ColEval">Đánh giá</sys:String>
+    <sys:String x:Key="Spot_WaitingNg">Đang chờ dữ liệu Panel lỗi NG...</sys:String>
+    <sys:String x:Key="Spot_NoActiveDefects">Chưa có lỗi phát sinh</sys:String>
+    <sys:String x:Key="Spot_Idle">Chờ</sys:String>
+    <sys:String x:Key="Spot_LeftCamDefault">Cam trái (Cam 1)</sys:String>
+    <sys:String x:Key="Spot_RightCamDefault">Cam phải (Cam 2)</sys:String>
+    <sys:String x:Key="Spot_LeftCamFormat">Cam trái ({0})</sys:String>
+    <sys:String x:Key="Spot_RightCamFormat">Cam phải ({0})</sys:String>
+    <sys:String x:Key="Spot_NoImage">Không có ảnh</sys:String>
+    <sys:String x:Key="Spot_LoadingMesCam">Đang tải dữ liệu MES &amp; Camera...</sys:String>
+    <sys:String x:Key="Spot_Searching">Đang tìm...</sys:String>
+    <sys:String x:Key="Spot_NoPanelForLookup">Không có mã Panel để tra cứu MES/Ảnh</sys:String>
+    <sys:String x:Key="Spot_NoPanelName">Không có mã Panel</sys:String>
+    <sys:String x:Key="Spot_MesParamsNgFormat">MES: {0} thông số ({1} NG)</sys:String>
+    <sys:String x:Key="Spot_MesParamsAllOkFormat">MES: {0} thông số (Tất cả OK)</sys:String>
+    <sys:String x:Key="Spot_MesUnreachable">Mất kết nối máy chủ MES</sys:String>
+    <sys:String x:Key="Spot_MesLogNotFound">Không tìm thấy file log MES</sys:String>
+    <sys:String x:Key="Spot_MesPanelNotFound">Không tìm thấy Panel trong MES</sys:String>
+    <sys:String x:Key="Spot_MesLookupError">Lỗi tra cứu MES</sys:String>
+    <sys:String x:Key="Spot_NotConfigured">Chưa cấu hình</sys:String>
+    <sys:String x:Key="Spot_CameraOffline">Camera ngoại tuyến</sys:String>
+    <sys:String x:Key="Spot_FolderNotFound">Không thấy thư mục ảnh</sys:String>
+    <sys:String x:Key="Spot_NoImagesInFolder">Thư mục không có ảnh</sys:String>
+    <sys:String x:Key="Spot_DecodeError">Lỗi giải mã ảnh</sys:String>
+    <sys:String x:Key="Spot_SearchError">Lỗi tìm kiếm</sys:String>
+
+    <!-- ================================================================ -->
+    <!-- CONTEXT MENU & MACHINE ROW TOOLTIPS (C#)                         -->
+    <!-- ================================================================ -->
+    <sys:String x:Key="Menu_CopySelectedCell">Sao chép ô đã chọn</sys:String>
+    <sys:String x:Key="Menu_CopyCellFormat">Sao chép ô: '{0}'</sys:String>
+    <sys:String x:Key="Menu_CopyEntireRow">Sao chép cả dòng</sys:String>
+    <sys:String x:Key="Menu_CopySelectedRowsFormat">Sao chép {0} dòng đã chọn</sys:String>
+    <sys:String x:Key="Menu_CopyRowWithHeaders">Sao chép dòng (Kèm tiêu đề)</sys:String>
+    <sys:String x:Key="Menu_CopyRowsWithHeadersFormat">Sao chép {0} dòng (Kèm tiêu đề)</sys:String>
+    <sys:String x:Key="Menu_CopyPanelName">Sao chép mã Panel</sys:String>
+    <sys:String x:Key="Menu_CopyPanelFormat">Sao chép Panel: {0}</sys:String>
+    <sys:String x:Key="Menu_CopyBluName">Sao chép mã Blu</sys:String>
+    <sys:String x:Key="Menu_CopyBluFormat">Sao chép Blu: {0}</sys:String>
+    <sys:String x:Key="Menu_CopyPmntCode">Sao chép mã PMNT</sys:String>
+    <sys:String x:Key="Menu_CopyPmntFormat">Sao chép mã PMNT: {0}</sys:String>
+    <sys:String x:Key="Menu_FilterByThisPmnt">Lọc theo PMNT này</sys:String>
+    <sys:String x:Key="Menu_FilterPmntFormat">Lọc theo PMNT: {0}</sys:String>
+    <sys:String x:Key="Menu_FilterByThisPanel">Lọc theo Panel này</sys:String>
+    <sys:String x:Key="Menu_FilterPanelFormat">Lọc theo Panel: {0}</sys:String>
+    <sys:String x:Key="Menu_OpenImagesBothDefault">Mở thư mục ảnh (Trái &amp; Phải)</sys:String>
+    <sys:String x:Key="Menu_OpenImagesNoPanel">Mở thư mục ảnh (Không có mã Panel)</sys:String>
+    <sys:String x:Key="Menu_OpenImagesBothFormat">Mở ảnh: {0} (Trái &amp; Phải)</sys:String>
+    <sys:String x:Key="Menu_OpenImageLeftDefault">Mở ảnh Camera trái (Cam 1)</sys:String>
+    <sys:String x:Key="Menu_OpenImageRightDefault">Mở ảnh Camera phải (Cam 2)</sys:String>
+    <sys:String x:Key="Menu_OpenImageLeftFormat">Mở ảnh Cam trái (Cam {0} - {1})</sys:String>
+    <sys:String x:Key="Menu_OpenImageRightFormat">Mở ảnh Cam phải (Cam {0} - {1})</sys:String>
+    <sys:String x:Key="Menu_NotConfigured">(chưa cấu hình)</sys:String>
+
+    <sys:String x:Key="Tip_EnableMachineFormat">Bật/Tắt đọc dữ liệu máy {0}</sys:String>
+    <sys:String x:Key="Tip_OtpPathFormat">Đường dẫn file OTP_1.log của máy {0}</sys:String>
+    <sys:String x:Key="Tip_MesPathFormat">Đường dẫn file MES_1.log của máy {0}</sys:String>
+    <sys:String x:Key="Dlg_SelectOtpTitleFormat">Chọn file OTP_1.log cho máy {0}</sys:String>
+    <sys:String x:Key="Dlg_SelectMesTitleFormat">Chọn file MES_1.log cho máy {0}</sys:String>
+
+    <!-- ================================================================ -->
+    <!-- STATUS BAR & DIALOG MESSAGES (C#)                                -->
+    <!-- ================================================================ -->
+    <sys:String x:Key="Status_ReadyShort">● Sẵn sàng</sys:String>
+    <sys:String x:Key="Status_Ready">● Sẵn sàng (Nhấn 'Đọc Log' hoặc 'Bật Thời gian thực')</sys:String>
+    <sys:String x:Key="Status_CopiedPrefix">Đã chép</sys:String>
+    <sys:String x:Key="Status_CopiedColFormat">Đã chép {0}</sys:String>
+    <sys:String x:Key="Status_CopiedPanel">Đã chép Panel</sys:String>
+    <sys:String x:Key="Status_CopiedBlu">Đã chép Blu</sys:String>
+    <sys:String x:Key="Status_CopiedPmnt">Đã chép PMNT</sys:String>
+    <sys:String x:Key="Status_CopiedOneRow">Đã chép 1 dòng vào Clipboard</sys:String>
+    <sys:String x:Key="Status_CopiedRowsFormat">Đã chép {0} dòng vào Clipboard</sys:String>
+    <sys:String x:Key="Status_NoPanelForImages">Dòng đang chọn không có mã Panel để mở ảnh</sys:String>
+    <sys:String x:Key="Status_ImagesNotConfiguredFormat">Chưa cấu hình thư mục ảnh cho máy {0} (xem config\settings.json)</sys:String>
+    <sys:String x:Key="Status_SearchingImagesFormat">● Đang tìm thư mục ảnh cho Panel '{0}' ({1})...</sys:String>
+    <sys:String x:Key="Status_OpenedImagesFormat">● Đã mở thư mục ảnh cho Panel '{0}' ({1}: {2} bên)</sys:String>
+    <sys:String x:Key="Status_ImageHostOfflineFormat">Không thể kết nối máy chủ ảnh: {0}</sys:String>
+    <sys:String x:Key="Status_ImageSearchErrorFormat">Lỗi tìm kiếm thư mục ảnh: {0}</sys:String>
+    <sys:String x:Key="Status_ImageFolderNotFoundFormat">Không tìm thấy thư mục ảnh cho Panel '{0}' trên {1}</sys:String>
+    <sys:String x:Key="Status_NoValidPanelForMes">Dòng này không có mã Panel hợp lệ để tra cứu MES_1.log</sys:String>
+    <sys:String x:Key="Status_MesNotConfiguredFormat">Chưa cấu hình đường dẫn MES_1.log cho máy {0}</sys:String>
+    <sys:String x:Key="Status_LookingUpMesFormat">● Đang tra cứu dữ liệu MES cho Panel '{0}' ({1})...</sys:String>
+    <sys:String x:Key="Status_MesReadErrorFormat">Lỗi đọc file MES_1.log: {0}</sys:String>
+    <sys:String x:Key="Status_MesNotFoundOrLostFormat">Không tìm thấy MES_1.log hoặc mất kết nối ({0})</sys:String>
+    <sys:String x:Key="Status_NoMesDataFormat">Không tìm thấy dữ liệu MES cho Panel '{0}'</sys:String>
+    <sys:String x:Key="Status_LoadedMesDetailsFormat">● Đã tải chi tiết MES cho Panel '{0}' ({1} lần đo)</sys:String>
+    <sys:String x:Key="Status_StopRtBeforeModify">Vui lòng dừng Thời gian thực trước khi đổi đường dẫn log</sys:String>
+    <sys:String x:Key="Status_BusyLoadingLogs">● Đang bận đọc log, vui lòng đợi</sys:String>
+    <sys:String x:Key="Status_UpdatedMesFileFormat">● Đã cập nhật file MES_1.log cho máy {0}</sys:String>
+    <sys:String x:Key="Status_NormalizedRotatedFormat">● Đã tự động chuyển từ log xoay vòng sang file chính {0}</sys:String>
+    <sys:String x:Key="Status_ErrorConfigLogPathFormat">Lỗi cấu hình đường dẫn log: {0}</sys:String>
+    <sys:String x:Key="Status_InvalidDateRange">● Khoảng thời gian không hợp lệ: Thời gian 'Từ' phải &lt;= 'Đến'</sys:String>
+    <sys:String x:Key="Status_ReadingLogsDateRange">● Đang đọc file log theo khoảng thời gian đã chọn...</sys:String>
+    <sys:String x:Key="Status_ReadingLogs">● Đang đọc file log...</sys:String>
+    <sys:String x:Key="Status_LoadedZeroRecords">● Đã tải (0 bản ghi)</sys:String>
+    <sys:String x:Key="Status_LoadedDateRangeTrimmedFormat">● Đã tải {0:N0} bản ghi (lược bỏ {1:N0} bản ghi cũ; RAM bắt đầu từ {2:yyyy-MM-dd HH:mm})</sys:String>
+    <sys:String x:Key="Status_LoadedDateRangeFormat">● Đã tải {0:N0} bản ghi cho khoảng thời gian đã chọn</sys:String>
+    <sys:String x:Key="Status_LoadedLatestTrimmedFormat">● Đã tải {0:N0} bản ghi mới nhất ({1:N0} bản ghi trước {2:yyyy-MM-dd HH:mm} đã lược — chọn Từ/Đến &amp; nhấn Đọc Log để xem ngày cũ)</sys:String>
+    <sys:String x:Key="Status_LoadedRecordsFormat">● Đã tải ({0:N0} bản ghi)</sys:String>
+    <sys:String x:Key="Status_FileReadError">● Lỗi đọc file</sys:String>
+    <sys:String x:Key="Status_WaitFinishBeforeRt">Đang đọc log, vui lòng đợi hoàn tất trước khi bật Thời gian thực</sys:String>
+    <sys:String x:Key="Status_WaitingLogServer">Đang chờ phản hồi từ máy chủ log...</sys:String>
+    <sys:String x:Key="Status_RtErrorFormat">Lỗi Thời gian thực: {0}</sys:String>
+    <sys:String x:Key="Status_MonitoringClearedTo">● Đã xóa bộ lọc ngày 'Đến' trong quá khứ &amp; đang giám sát song song...</sys:String>
+    <sys:String x:Key="Status_MonitoringParallel">● Đang giám sát song song...</sys:String>
+    <sys:String x:Key="Status_RtStopped">● Đã dừng Thời gian thực</sys:String>
+    <sys:String x:Key="Status_ConnLostRetryingFormat">Mất kết nối, đang thử lại - {0}</sys:String>
+    <sys:String x:Key="Status_LiveFilteredPastTo">● Có dữ liệu mới (đang bị ẩn bởi bộ lọc ngày 'Đến' — xóa lọc để xem)</sys:String>
+    <sys:String x:Key="Status_AutoExportedShiftFormat">● Đã tự động xuất báo cáo &amp; biểu đồ ca: {0}</sys:String>
+    <sys:String x:Key="Status_NoDataExportCsv">Không có dữ liệu để xuất ra CSV!</sys:String>
+    <sys:String x:Key="Status_ExportedCsvFormat">● Đã xuất CSV: {0}</sys:String>
+    <sys:String x:Key="Status_ExportCsvErrorFormat">Lỗi xuất CSV: {0}</sys:String>
+    <sys:String x:Key="Status_NoDataExportShift">Không có dữ liệu log để xuất báo cáo ca!</sys:String>
+    <sys:String x:Key="Status_ExportedShiftFormat">● Đã xuất báo cáo ca: {0} ({1:N0} bản ghi)</sys:String>
+    <sys:String x:Key="Status_ExportShiftErrorFormat">Lỗi xuất báo cáo ca: {0}</sys:String>
+    <sys:String x:Key="Status_FilterAppliedFormat">● Đã áp dụng bộ lọc ({0:N0} bản ghi)</sys:String>
+    <sys:String x:Key="Status_OutsideRamWindowFormat">● {0:N0} trong RAM (chỉ mới tải {1} ~ {2} — nhấn 'Đọc Log' để tải lại)</sys:String>
+    <sys:String x:Key="Status_TrimmedRamWindowFormat">● {0:N0} trong RAM (bản ghi trước {1:yyyy-MM-dd HH:mm} đã lược — nhấn 'Đọc Log' cho khoảng ngày này)</sys:String>
+    <sys:String x:Key="Status_ClearedFilter">● Đã xóa bộ lọc</sys:String>
+    <sys:String x:Key="Status_ChartClearedPmnt">● Đã xóa lọc PMNT, hiển thị toàn bộ lỗi trên biểu đồ</sys:String>
+    <sys:String x:Key="Status_ChartFilteringPmntFormat">● Đang lọc biểu đồ theo PMNT: {0} (Nhấp lại điểm để hiện tất cả)</sys:String>
+    <sys:String x:Key="Status_ChartSwitchedLogFormat">● Đã chuyển sang Bản ghi Log lọc theo PMNT: {0}</sys:String>
+    <sys:String x:Key="Status_UiErrorFormat">Lỗi giao diện: {0}</sys:String>
+
+    <sys:String x:Key="Dlg_NotificationTitle">Thông báo</sys:String>
+    <sys:String x:Key="Dlg_ErrorTitle">Lỗi</sys:String>
+    <sys:String x:Key="Dlg_SuccessTitle">Thành công</sys:String>
+    <sys:String x:Key="Dlg_ConnWarningTitle">Cảnh báo kết nối</sys:String>
+    <sys:String x:Key="Dlg_InvalidDateRangeTitle">Khoảng thời gian không hợp lệ</sys:String>
+    <sys:String x:Key="Dlg_MesNotFoundTitle">Không tìm thấy file MES_1.log</sys:String>
+    <sys:String x:Key="Dlg_NoMesDataTitle">Không có dữ liệu MES</sys:String>
+    <sys:String x:Key="Dlg_ShiftExportedTitle">Đã xuất Báo cáo Ca</sys:String>
+    <sys:String x:Key="Dlg_AppErrorTitle">Giám sát Log OTP - Lỗi</sys:String>
+    <sys:String x:Key="Dlg_UnexpectedUiErrorFormat">Đã xảy ra lỗi giao diện ngoài dự kiến: {0}&#x0a;&#x0a;Chi tiết đã được ghi vào: logs\gui-error.log</sys:String>
+    <sys:String x:Key="Dlg_EnableOneMachineFormat">Vui lòng bật ít nhất một máy ({0})!</sys:String>
+    <sys:String x:Key="Dlg_InvalidDateRangeMsg">Khoảng thời gian lọc Từ / Đến không hợp lệ. Vui lòng điều chỉnh hoặc xóa ngày trước khi tải.</sys:String>
+    <sys:String x:Key="Dlg_NoLogsForRealtime">Không có file log nào để bắt đầu Thời gian thực!</sys:String>
+    <sys:String x:Key="Dlg_CannotStartRtFormat">Không thể bắt đầu Thời gian thực: {0}</sys:String>
+    <sys:String x:Key="Dlg_ExportCsvDialogTitle">Xuất Báo cáo OTP CSV</sys:String>
+    <sys:String x:Key="Dlg_CsvExportedMsgFormat">Xuất file CSV thành công!&#x0a;{0}</sys:String>
+    <sys:String x:Key="Dlg_ShiftExportedMsgFormat">Xuất Báo cáo Ca ({0}) thành công!&#x0a;Số bản ghi: {1:N0} (OK: {2:N0} | NG: {3:N0} | Tỷ lệ: {4:F2}%)&#x0a;Tổng hợp: {5}{6}</sys:String>
+    <sys:String x:Key="Dlg_ShiftDetailLineFormat">&#x0a;Chi tiết: {0}</sys:String>
+    <sys:String x:Key="Dlg_NoValidPanelForMesMsg">Dòng này không có mã Panel hợp lệ để tra cứu MES_1.log!</sys:String>
+    <sys:String x:Key="Dlg_MesNotConfiguredMsgFormat">Chưa cấu hình đường dẫn file MES_1.log cho máy {0}.&#x0a;Vui lòng cấu hình đường dẫn MES_1.log trên thanh cài đặt phía trên (nút 'MES...').</sys:String>
+    <sys:String x:Key="Dlg_MesReadErrorMsgFormat">Lỗi đọc file MES_1.log:&#x0a;{0}</sys:String>
+    <sys:String x:Key="Dlg_MesNotFoundMsgFormat">Không tìm thấy hoặc không thể kết nối tới file MES_1.log của máy {0} tại:&#x0a;{1}&#x0a;&#x0a;Vui lòng kiểm tra kết nối mạng hoặc chọn lại đường dẫn MES_1.log trên thanh cấu hình ('MES...').</sys:String>
+    <sys:String x:Key="Dlg_NoMesBodyMsgFormat">Không tìm thấy dữ liệu &lt;BODY&gt; cho Panel '{0}' trong file:&#x0a;{1}</sys:String>
+    <sys:String x:Key="Dlg_TimedOutReadingLogFormat">Quá thời gian đọc file log của máy {0}:&#x0a;{1}{2}&#x0a;Vui lòng kiểm tra tải máy chủ hoặc thu hẹp khoảng ngày.</sys:String>
+    <sys:String x:Key="Dlg_CannotConnectLogFormat">Không thể kết nối hoặc tìm thấy file cho máy {0}:&#x0a;{1}{2}&#x0a;Vui lòng kiểm tra quyền chia sẻ mạng hoặc địa chỉ IP!</sys:String>
+    <sys:String x:Key="Dlg_ErrorReadingFileFormat">Lỗi đọc file: {0}</sys:String>
+
+    <sys:String x:Key="Footer_FileTimedOutFormat">{0}: Quá thời gian</sys:String>
+    <sys:String x:Key="Footer_FileCannotConnectFormat">{0}: Mất kết nối</sys:String>
+    <sys:String x:Key="Footer_FileZeroInRangeFormat">{0}: {1} (0 file trong khoảng ngày)</sys:String>
+    <sys:String x:Key="Footer_FileRotatedSuffixFormat"> +{0} file xoay vòng</sys:String>
+    <sys:String x:Key="Footer_FileSkippedBlocksSuffixFormat"> - bỏ qua {0} khối thiếu END</sys:String>
+    <sys:String x:Key="Status_SkippedBlocksFormat">{0}: bỏ qua {1} khối thiếu END</sys:String>
+    <sys:String x:Key="Spot_SerialImageNotFoundFormat">Không tìm thấy ảnh của Serial {0} trên hệ thống lưu trữ</sys:String>
+
+    <!-- ================================================================ -->
+    <!-- MES PARAMETER DETAILS & OPTICAL INSPECTION WINDOW                -->
+    <!-- ================================================================ -->
+    <sys:String x:Key="MesDetail_WindowTitle">Chi tiết thông số MES &amp; Soi lỗi quang học</sys:String>
+    <sys:String x:Key="MesDetail_PanelSerialHeader">MÃ PANEL / SERIAL:</sys:String>
+    <sys:String x:Key="MesDetail_PanelSerialToolTip">Chọn hoặc bấm Sao chép mã Panel</sys:String>
+    <sys:String x:Key="MesDetail_CopyPanel">Sao chép mã</sys:String>
+    <sys:String x:Key="MesDetail_CopyPanelToolTip">Sao chép mã Panel / Serial vào Clipboard</sys:String>
+    <sys:String x:Key="MesDetail_MesResult">Kết quả MES:</sys:String>
+    <sys:String x:Key="MesDetail_MesRun">Lần đo MES:</sys:String>
+    <sys:String x:Key="MesDetail_RunItemFormat">Lần {0}: {1} ({2})</sys:String>
+    <sys:String x:Key="MesDetail_Successful">Thành công</sys:String>
+    <sys:String x:Key="MesDetail_PanelSerialLabel">Mã Panel:</sys:String>
+    <sys:String x:Key="MesDetail_MesTimeLabel">Giờ MES:</sys:String>
+    <sys:String x:Key="MesDetail_BluNameLabel">Mã BLU:</sys:String>
+    <sys:String x:Key="MesDetail_RoiLocationLabel">Vị trí ROI:</sys:String>
+    <sys:String x:Key="MesDetail_DefectCodesLabel">Mã lỗi:</sys:String>
+    <sys:String x:Key="MesDetail_OtpTimeLabel">Giờ OTP:</sys:String>
+    <sys:String x:Key="MesDetail_SearchPlaceholder">Tìm mã kiểm tra, thông số, giá trị, tiêu chuẩn...</sys:String>
+    <sys:String x:Key="MesDetail_SearchToolTip">Lọc thông số theo Mã kiểm tra, Tên, Giá trị đo, Tiêu chuẩn hoặc Đánh giá</sys:String>
+    <sys:String x:Key="MesDetail_ClearSearchToolTip">Xóa bộ lọc tìm kiếm</sys:String>
+    <sys:String x:Key="MesDetail_NgOnlyFormat">Chỉ NG ({0})</sys:String>
+    <sys:String x:Key="MesDetail_NgOnlyToolTip">Chỉ hiển thị các thông số lỗi NG</sys:String>
+    <sys:String x:Key="MesDetail_ParamCountFormat">{0} mục</sys:String>
+    <sys:String x:Key="MesDetail_ParamFilteredCountFormat">{0} / {1} mục</sys:String>
+    <sys:String x:Key="MesDetail_Col_IndexToolTip">Số thứ tự (#)</sys:String>
+    <sys:String x:Key="MesDetail_Col_TestCode">Mã kiểm tra</sys:String>
+    <sys:String x:Key="MesDetail_Col_ParamName">Tên thông số</sys:String>
+    <sys:String x:Key="MesDetail_Col_MeasuredValue">Giá trị đo</sys:String>
+    <sys:String x:Key="MesDetail_Col_StandardSpec">Tiêu chuẩn</sys:String>
+    <sys:String x:Key="MesDetail_Col_Evaluation">Đánh giá</sys:String>
+    <sys:String x:Key="MesDetail_CameraViewerTitle">KHUNG SOI LỖI CAMERA</sys:String>
+    <sys:String x:Key="MesDetail_Loading">Đang tải...</sys:String>
+    <sys:String x:Key="MesDetail_ZoomOutToolTip">Thu nhỏ (Lăn chuột xuống)</sys:String>
+    <sys:String x:Key="MesDetail_ZoomSliderToolTip">Kéo để chỉnh độ phóng đại (100% - 500%)</sys:String>
+    <sys:String x:Key="MesDetail_ZoomInToolTip">Phóng to (Lăn chuột lên)</sys:String>
+    <sys:String x:Key="MesDetail_ZoomFitToolTip">Vừa khung 100% (Nhấp đúp vào ảnh)</sys:String>
+    <sys:String x:Key="MesDetail_OneToOneToolTip">Nạp ảnh gốc độ phân giải 1:1 (photo/Main*.png theo yêu cầu)</sys:String>
+    <sys:String x:Key="MesDetail_CropBtn">Ảnh lỗi</sys:String>
+    <sys:String x:Key="MesDetail_CropToolTip">Chuyển đổi giữa ảnh cắt vết lỗi (piresult/defectPicture) và ảnh toàn cảnh (AlgIntegrate.jpg)</sys:String>
+    <sys:String x:Key="MesDetail_SideBySideBtn">Song song</sys:String>
+    <sys:String x:Key="MesDetail_SideBySideToolTip">So sánh song song ảnh Camera Trái và Phải</sys:String>
+    <sys:String x:Key="MesDetail_RawPrefixFormat">Ảnh gốc 1:1: {0}</sys:String>
+    <sys:String x:Key="MesDetail_CameraServiceUnavailable">Dịch vụ camera không khả dụng</sys:String>
+    <sys:String x:Key="MesDetail_MesFileFormat">Tệp MES: {0}</sys:String>
+    <sys:String x:Key="MesDetail_CopyTableBtn">Sao chép bảng thông số</sys:String>
+    <sys:String x:Key="MesDetail_CopiedBtn">Đã chép!</sys:String>
+    <sys:String x:Key="MesDetail_CopiedOneRow">Đã sao chép 1 dòng</sys:String>
+    <sys:String x:Key="MesDetail_CopiedRowsFormat">Đã sao chép {0} dòng</sys:String>
+    <sys:String x:Key="MesDetail_CopyErrorFormat">Lỗi sao chép: {0}</sys:String>
+    <sys:String x:Key="MesDetail_CloseBtn">Đóng</sys:String>
+
+</ResourceDictionary>

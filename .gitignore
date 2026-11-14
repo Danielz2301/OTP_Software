@@ -1,0 +1,22 @@
+# Logs and export outputs
+*.log
+logs/*
+!logs/.gitkeep
+exports/*
+!exports/.gitkeep
+
+# .NET build outputs and IDE cache
+bin/
+obj/
+[Bb]in/
+[Oo]bj/
+publish/
+[Pp]ublish/
+dist/
+[Dd]ist/
+.vs/
+TestResults/
+*.user
+*.userosscache
+*.suo
+*.userprefs

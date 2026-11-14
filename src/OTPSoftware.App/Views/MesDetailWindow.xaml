@@ -1,0 +1,1116 @@
+<Window x:Class="OTPSoftware.App.Views.MesDetailWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:OTPSoftware.App.ViewModels"
+        mc:Ignorable="d"
+        Title="{DynamicResource MesDetail_WindowTitle}"
+        Height="680" Width="1140" MinHeight="520" MinWidth="880"
+        UseLayoutRounding="True"
+        SnapsToDevicePixels="True"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="ClearType"
+        Background="{StaticResource BgPrimaryBrush}"
+        Foreground="{StaticResource TextPrimaryBrush}"
+        FontFamily="Segoe UI Variable Display, Segoe UI, Microsoft YaHei UI"
+        FontSize="13"
+        WindowStartupLocation="CenterOwner"
+        d:DataContext="{d:DesignInstance vm:MesDetailViewModel}">
+
+    <Grid Margin="14">
+        <Grid.RowDefinitions>
+            <!-- Row 0: Top Identity & Run Selector Bar -->
+            <RowDefinition Height="Auto"/>
+            <!-- Row 1: 2-Column Split-View (Left: Key-Value Metadata + MES Table | Right: Camera Viewer) -->
+            <RowDefinition Height="*"/>
+            <!-- Row 2: Bottom Footer Bar -->
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- ================================================================ -->
+        <!-- ROW 0: Header Identity & Multi-Run Selector Card                 -->
+        <!-- ================================================================ -->
+        <Border Grid.Row="0"
+                Background="{StaticResource SurfaceCardBrush}"
+                BorderBrush="{StaticResource BorderHairlineBrush}"
+                BorderThickness="1"
+                CornerRadius="10"
+                Padding="14,10"
+                Margin="0,0,0,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <WrapPanel Grid.Column="0" VerticalAlignment="Center">
+                    <!-- Panel Identity + Quick Copy -->
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,2,14,2">
+                        <TextBlock Text="{DynamicResource MesDetail_PanelSerialHeader}"
+                                   FontSize="11"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,8,0"/>
+                        <TextBox Text="{Binding PanelName, Mode=OneWay}"
+                                 IsReadOnly="True"
+                                 FontWeight="Bold"
+                                 FontSize="14"
+                                 Foreground="{StaticResource AccentCyanBrush}"
+                                 Background="{StaticResource SurfaceInputBrush}"
+                                 BorderBrush="{StaticResource BorderHairlineBrush}"
+                                 Padding="8,3"
+                                 MinWidth="150"
+                                 ToolTip="{DynamicResource MesDetail_PanelSerialToolTip}"/>
+                        <Button Command="{Binding CopyPanelCommand}"
+                                Style="{StaticResource AccentOutlineButtonStyle}"
+                                Padding="9,3"
+                                FontSize="11.5"
+                                Margin="6,0,0,0"
+                                ToolTip="{DynamicResource MesDetail_CopyPanelToolTip}">
+                            <StackPanel Orientation="Horizontal" IsHitTestVisible="False">
+                                <Path Data="{StaticResource IconCopyGeometry}"
+                                      Width="12" Height="12" Stretch="Uniform"
+                                      Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                      VerticalAlignment="Center"
+                                      Margin="0,0,5,0"/>
+                                <TextBlock Text="{Binding CopyPanelButtonText}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+
+                    <!-- Machine / Source Pill -->
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,2,14,2">
+                        <TextBlock Text="{DynamicResource Filter_Machine}"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,6,0"/>
+                        <Border Background="{StaticResource AccentTintBrush}"
+                                BorderBrush="{StaticResource AccentBorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="6"
+                                Padding="8,2">
+                            <TextBlock Text="{Binding Source}"
+                                       FontWeight="Bold"
+                                       Foreground="{StaticResource AccentCyanBrush}"/>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- PMNT Fixture Pill -->
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,2,14,2">
+                        <TextBlock Text="{DynamicResource Filter_Pmnt}"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,6,0"/>
+                        <Border Background="{StaticResource WarningTintBrush}"
+                                BorderBrush="{StaticResource WarningBorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="6"
+                                Padding="8,2">
+                            <TextBlock Text="{Binding Pmnt}"
+                                       Style="{StaticResource TabularTextStyle}"
+                                       FontWeight="Bold"
+                                       Foreground="{StaticResource WarningTextBrush}"/>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- MES Result Badge -->
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,2,10,2">
+                        <TextBlock Text="{DynamicResource MesDetail_MesResult}"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,6,0"/>
+                        <Border Background="{StaticResource SurfaceInputBrush}"
+                                BorderBrush="{Binding TestResultForeground, Converter={StaticResource HexToFrozenBrushConverter}}"
+                                BorderThickness="1"
+                                CornerRadius="6"
+                                Padding="9,2">
+                            <TextBlock Text="{Binding TestResultText}"
+                                       FontWeight="Bold"
+                                       Foreground="{Binding TestResultForeground, Converter={StaticResource HexToFrozenBrushConverter}}"/>
+                        </Border>
+                    </StackPanel>
+                </WrapPanel>
+
+                <!-- Multi-Run Selector -->
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center"
+                            Visibility="{Binding IsMultiRun, Converter={StaticResource BoolToVis}}">
+                    <TextBlock Text="{DynamicResource MesDetail_MesRun}"
+                               Foreground="{StaticResource TextSecondaryBrush}"
+                               VerticalAlignment="Center"
+                               Margin="0,0,6,0"/>
+                    <ComboBox ItemsSource="{Binding RunItems}"
+                              SelectedIndex="{Binding SelectedRunIndex}"
+                              MinWidth="200"
+                              MaxWidth="290"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- ================================================================ -->
+        <!-- ROW 1: 2-Column Split-View (Left: MES Params | Right: Camera)    -->
+        <!-- ================================================================ -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.22*" MinWidth="460"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="0.78*" MinWidth="340"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- LEFT COLUMN: Key-Value Metadata Grid + Quick Search + Virtualized MES Parameter DataGrid -->
+            <Grid Grid.Column="0" Margin="0,0,4,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Structured Key-Value Panel Metadata Card -->
+                <Border Grid.Row="0"
+                        Background="{StaticResource SurfaceCardBrush}"
+                        BorderBrush="{StaticResource BorderHairlineBrush}"
+                        BorderThickness="1"
+                        CornerRadius="10"
+                        Padding="12,10"
+                        Margin="0,0,0,8">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="1.2*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="0.9*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Row 0: Panel Serial & MES Log Time -->
+                        <TextBlock Grid.Row="0" Grid.Column="0"
+                                   Text="{DynamicResource MesDetail_PanelSerialLabel}"
+                                   FontSize="11.5"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   Margin="0,0,8,6"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1"
+                                   Text="{Binding PanelName}"
+                                   Style="{StaticResource TabularTextStyle}"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                   TextTrimming="CharacterEllipsis"
+                                   ToolTip="{Binding PanelName}"
+                                   Margin="0,0,14,6"/>
+
+                        <TextBlock Grid.Row="0" Grid.Column="2"
+                                   Text="{DynamicResource MesDetail_MesTimeLabel}"
+                                   FontSize="11.5"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   Margin="0,0,8,6"/>
+                        <TextBlock Grid.Row="0" Grid.Column="3"
+                                   Text="{Binding LogTime}"
+                                   Style="{StaticResource TabularTextStyle}"
+                                   FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                   TextTrimming="CharacterEllipsis"
+                                   ToolTip="{Binding LogTime}"
+                                   Margin="0,0,0,6"/>
+
+                        <!-- Row 1: BLU Name & ROI Location -->
+                        <TextBlock Grid.Row="1" Grid.Column="0"
+                                   Text="{DynamicResource MesDetail_BluNameLabel}"
+                                   FontSize="11.5"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   Margin="0,0,8,6"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1"
+                                   Text="{Binding BluName}"
+                                   Style="{StaticResource TabularTextStyle}"
+                                   FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                   TextTrimming="CharacterEllipsis"
+                                   ToolTip="{Binding BluName}"
+                                   Margin="0,0,14,6"/>
+
+                        <TextBlock Grid.Row="1" Grid.Column="2"
+                                   Text="{DynamicResource MesDetail_RoiLocationLabel}"
+                                   FontSize="11.5"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   Margin="0,0,8,6"/>
+                        <TextBlock Grid.Row="1" Grid.Column="3"
+                                   Text="{Binding RoiLocation}"
+                                   Style="{StaticResource TabularTextStyle}"
+                                   FontWeight="SemiBold"
+                                   Foreground="{StaticResource AccentCyanBrush}"
+                                   TextTrimming="CharacterEllipsis"
+                                   ToolTip="{Binding RoiLocation}"
+                                   Margin="0,0,0,6"/>
+
+                        <!-- Row 2: Defect Codes & OTP Log Timestamp -->
+                        <TextBlock Grid.Row="2" Grid.Column="0"
+                                   Text="{DynamicResource MesDetail_DefectCodesLabel}"
+                                   FontSize="11.5"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   Margin="0,0,8,0"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1"
+                                   Text="{Binding DefectCodes}"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource FailTextBrush}"
+                                   TextTrimming="CharacterEllipsis"
+                                   ToolTip="{Binding DefectCodes}"
+                                   Margin="0,0,14,0"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="2"
+                                   Text="{DynamicResource MesDetail_OtpTimeLabel}"
+                                   FontSize="11.5"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   Margin="0,0,8,0"/>
+                        <TextBlock Grid.Row="2" Grid.Column="3"
+                                   Text="{Binding TimeFormatted}"
+                                   Style="{StaticResource TabularTextStyle}"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   TextTrimming="CharacterEllipsis"
+                                   ToolTip="{Binding TimeFormatted}"/>
+                    </Grid>
+                </Border>
+
+                <!-- Quick Search & NG Diagnosis Filter Bar -->
+                <Grid Grid.Row="1" Margin="0,0,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Instant Parameter Search Input -->
+                    <Grid Grid.Column="0" Margin="0,0,8,0">
+                        <TextBox x:Name="txtParameterSearch"
+                                 Text="{Binding ParameterSearchText, UpdateSourceTrigger=PropertyChanged}"
+                                 Padding="28,5,26,5"
+                                 FontSize="12"
+                                 PreviewKeyDown="OnParameterSearchPreviewKeyDown"
+                                 ToolTip="{DynamicResource MesDetail_SearchToolTip}"/>
+                        <Path Data="{StaticResource IconSearchGeometry}"
+                              Style="{StaticResource VectorIconPathStyle}"
+                              Width="13" Height="13"
+                              Fill="{StaticResource TextMutedBrush}"
+                              HorizontalAlignment="Left"
+                              Margin="9,0,0,0"/>
+                        <TextBlock Text="{DynamicResource MesDetail_SearchPlaceholder}"
+                                   FontSize="12"
+                                   Foreground="{StaticResource TextMutedBrush}"
+                                   VerticalAlignment="Center"
+                                   TextTrimming="CharacterEllipsis"
+                                   Margin="29,0,26,0"
+                                   IsHitTestVisible="False">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding HasParameterSearchText}" Value="False">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <Button Command="{Binding ClearParameterSearchCommand}"
+                                Style="{StaticResource GhostButtonStyle}"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Padding="5,4"
+                                Margin="0,0,3,0"
+                                ToolTip="{DynamicResource MesDetail_ClearSearchToolTip}"
+                                Visibility="{Binding HasParameterSearchText, Converter={StaticResource BoolToVis}}">
+                            <Path Data="{StaticResource IconCloseGeometry}"
+                                  Style="{StaticResource VectorIconPathStyle}"
+                                  Width="10" Height="10"
+                                  Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                        </Button>
+                    </Grid>
+
+                    <!-- NG Only Triage Toggle -->
+                    <ToggleButton Grid.Column="1"
+                                  IsChecked="{Binding ShowNgOnly, Mode=TwoWay}"
+                                  Padding="10,5"
+                                  FontSize="11.5"
+                                  Margin="0,0,8,0"
+                                  ToolTip="{DynamicResource MesDetail_NgOnlyToolTip}">
+                        <StackPanel Orientation="Horizontal" IsHitTestVisible="False">
+                            <Ellipse Width="7" Height="7" VerticalAlignment="Center" Margin="0,0,6,0">
+                                <Ellipse.Style>
+                                    <Style TargetType="Ellipse">
+                                        <Setter Property="Fill" Value="{StaticResource PassBrush}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding HasNgParameters}" Value="True">
+                                                <Setter Property="Fill" Value="{StaticResource FailBrush}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Ellipse.Style>
+                            </Ellipse>
+                            <TextBlock Text="{Binding NgFilterLabel}" FontWeight="Bold" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </ToggleButton>
+
+                    <!-- Visible Row Count Badge -->
+                    <Border Grid.Column="2"
+                            Background="{StaticResource SurfaceCardBrush}"
+                            BorderBrush="{StaticResource BorderHairlineBrush}"
+                            BorderThickness="1"
+                            CornerRadius="6"
+                            Padding="9,4"
+                            VerticalAlignment="Center">
+                        <TextBlock Text="{Binding ParameterCountSummary}"
+                                   Style="{StaticResource TabularTextStyle}"
+                                   FontSize="11"
+                                   FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextSecondaryBrush}"/>
+                    </Border>
+                </Grid>
+
+                <!-- Virtualized MES Parameters DataGrid (NG sorted first & highlighted) -->
+                <DataGrid Grid.Row="2"
+                          ItemsSource="{Binding Parameters}"
+                          RowHeight="30"
+                          EnableRowVirtualization="True"
+                          EnableColumnVirtualization="True"
+                          VirtualizingPanel.IsVirtualizing="True"
+                          VirtualizingPanel.VirtualizationMode="Recycling"
+                          VirtualizingPanel.ScrollUnit="Pixel"
+                          VirtualizingPanel.CacheLength="2,2"
+                          VirtualizingPanel.CacheLengthUnit="Page">
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
+                            <Setter Property="Padding" Value="8,7"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding StatusText}" Value="NG">
+                                    <Setter Property="Background" Value="{StaticResource AlarmRowBgBrush}"/>
+                                    <Setter Property="BorderBrush" Value="{StaticResource FailBrush}"/>
+                                    <Setter Property="BorderThickness" Value="3,0,0,0"/>
+                                </DataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding StatusText}" Value="NG"/>
+                                        <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" Value="{StaticResource AlarmRowHoverBgBrush}"/>
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding StatusText}" Value="NG"/>
+                                        <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource Self}}" Value="True"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" Value="{StaticResource AlarmRowSelectedBgBrush}"/>
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding Index}"
+                                            Width="38"
+                                            MinWidth="34"
+                                            ElementStyle="{StaticResource TabularDataGridTextStyle}">
+                            <DataGridTextColumn.Header>
+                                <TextBlock Text="#"
+                                           TextTrimming="CharacterEllipsis"
+                                           ToolTip="{DynamicResource MesDetail_Col_IndexToolTip}"/>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Binding="{Binding DefectCodeGroup}"
+                                            Width="0.90*"
+                                            MinWidth="86"
+                                            ElementStyle="{StaticResource DataGridCellTextStyle}">
+                            <DataGridTextColumn.Header>
+                                <TextBlock Text="{DynamicResource MesDetail_Col_TestCode}"
+                                           TextTrimming="CharacterEllipsis"
+                                           ToolTip="{DynamicResource MesDetail_Col_TestCode}"/>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Binding="{Binding ParamName}"
+                                            Width="1.25*"
+                                            MinWidth="104"
+                                            ElementStyle="{StaticResource DataGridCellTextStyle}">
+                            <DataGridTextColumn.Header>
+                                <TextBlock Text="{DynamicResource MesDetail_Col_ParamName}"
+                                           TextTrimming="CharacterEllipsis"
+                                           ToolTip="{DynamicResource MesDetail_Col_ParamName}"/>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Binding="{Binding ParamValue}"
+                                            Width="1.05*"
+                                            MinWidth="102"
+                                            ElementStyle="{StaticResource TabularDataGridTextStyle}">
+                            <DataGridTextColumn.Header>
+                                <TextBlock Text="{DynamicResource MesDetail_Col_MeasuredValue}"
+                                           TextTrimming="CharacterEllipsis"
+                                           ToolTip="{DynamicResource MesDetail_Col_MeasuredValue}"/>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Binding="{Binding Spec}"
+                                            Width="1.00*"
+                                            MinWidth="96"
+                                            ElementStyle="{StaticResource TabularDataGridTextStyle}">
+                            <DataGridTextColumn.Header>
+                                <TextBlock Text="{DynamicResource MesDetail_Col_StandardSpec}"
+                                           TextTrimming="CharacterEllipsis"
+                                           ToolTip="{DynamicResource MesDetail_Col_StandardSpec}"/>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTemplateColumn Width="Auto"
+                                                MinWidth="82"
+                                                ClipboardContentBinding="{Binding StatusText}">
+                            <DataGridTemplateColumn.Header>
+                                <TextBlock Text="{DynamicResource MesDetail_Col_Evaluation}"
+                                           TextTrimming="CharacterEllipsis"
+                                           ToolTip="{DynamicResource MesDetail_Col_Evaluation}"/>
+                            </DataGridTemplateColumn.Header>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border CornerRadius="6"
+                                            Padding="8,2"
+                                            HorizontalAlignment="Left"
+                                            BorderThickness="1">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Background" Value="{StaticResource IdleTintBrush}"/>
+                                                <Setter Property="BorderBrush" Value="{StaticResource IdleBrush}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding EvaluationStatus}" Value="Ok">
+                                                        <Setter Property="Background" Value="{StaticResource PassTintBrush}"/>
+                                                        <Setter Property="BorderBrush" Value="{StaticResource PassBrush}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding EvaluationStatus}" Value="Ng">
+                                                        <Setter Property="Background" Value="{StaticResource FailTintBrush}"/>
+                                                        <Setter Property="BorderBrush" Value="{StaticResource FailBrush}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <TextBlock Text="{Binding StatusText}"
+                                                   FontWeight="Bold"
+                                                   FontSize="11">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Foreground" Value="{StaticResource IdleBrush}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding EvaluationStatus}" Value="Ok">
+                                                            <Setter Property="Foreground" Value="{StaticResource PassBrush}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding EvaluationStatus}" Value="Ng">
+                                                            <Setter Property="Foreground" Value="{StaticResource FailBrush}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </Border>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+
+            <!-- Interactive Vertical GridSplitter between Table & Camera Defect Viewer -->
+            <GridSplitter Grid.Column="1"
+                          Width="6"
+                          ResizeDirection="Columns"
+                          ResizeBehavior="PreviousAndNext"
+                          Background="Transparent"
+                          Cursor="SizeWE"
+                          ShowsPreview="False"
+                          Focusable="False"/>
+
+            <!-- RIGHT COLUMN: Camera Defect Image Viewer Card -->
+            <Border Grid.Column="2"
+                    Background="{StaticResource SurfaceCardBrush}"
+                    BorderBrush="{StaticResource BorderHairlineBrush}"
+                    BorderThickness="1"
+                    CornerRadius="10"
+                    Padding="12"
+                    Margin="4,0,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <!-- 0: Viewer Header, Mode Switcher & Zoom Toolbar -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- 1: High-Resolution Active Inspection Viewport (Single or Side-by-Side) -->
+                        <RowDefinition Height="*"/>
+                        <!-- 2: Dual Left/Right Camera Strip (Single View only) -->
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Camera Header & Single Camera Channel Switcher -->
+                    <Grid Grid.Row="0" Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Grid.Column="0" VerticalAlignment="Center" Margin="0,0,8,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Path Grid.Column="0"
+                                  Data="{StaticResource IconCameraGeometry}"
+                                  Style="{StaticResource VectorIconPathStyle}"
+                                  Fill="{StaticResource AccentCyanBrush}"
+                                  Margin="0,0,6,0"/>
+                            <TextBlock Grid.Column="1"
+                                       Text="{DynamicResource MesDetail_CameraViewerTitle}"
+                                       FontSize="12.5"
+                                       FontWeight="Bold"
+                                       Foreground="{StaticResource AccentCyanBrush}"
+                                       TextTrimming="CharacterEllipsis"
+                                       ToolTip="{DynamicResource MesDetail_CameraViewerTitle}"
+                                       VerticalAlignment="Center"/>
+                            <Border Grid.Column="2"
+                                    Background="{StaticResource WarningTintBrush}"
+                                    BorderBrush="{StaticResource WarningBorderBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="4"
+                                    Padding="6,1"
+                                    Margin="6,0,0,0"
+                                    VerticalAlignment="Center"
+                                    Visibility="{Binding IsImageLoading, Converter={StaticResource BoolToVis}}">
+                                <TextBlock Text="{DynamicResource MesDetail_Loading}"
+                                           FontSize="10"
+                                           FontWeight="Bold"
+                                           Foreground="{StaticResource WarningTextBrush}"/>
+                            </Border>
+                        </Grid>
+
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                            <Button Content="{Binding LeftCameraLabel}"
+                                    Command="{Binding SelectLeftCameraCommand}"
+                                    Padding="7,3"
+                                    FontSize="11"
+                                    Margin="0,0,4,0">
+                                <Button.Style>
+                                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsLeftCameraSelected}" Value="True">
+                                                <Setter Property="Background" Value="{StaticResource AccentTintBrush}"/>
+                                                <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+                                                <Setter Property="Foreground" Value="{StaticResource AccentCyanBrush}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                            <Button Content="{Binding RightCameraLabel}"
+                                    Command="{Binding SelectRightCameraCommand}"
+                                    Padding="8,3"
+                                    FontSize="11">
+                                <Button.Style>
+                                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsRightCameraSelected}" Value="True">
+                                                <Setter Property="Background" Value="{StaticResource AccentTintBrush}"/>
+                                                <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+                                                <Setter Property="Foreground" Value="{StaticResource AccentCyanBrush}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Main High-Resolution Dark Inspection Viewport (Wheel Zoom 100%-500%, Drag Pan, Floating HUD) -->
+                    <Border x:Name="bdrCameraViewportHost"
+                            Grid.Row="1"
+                            Background="#05080F"
+                            BorderBrush="{StaticResource BorderHairlineBrush}"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            ClipToBounds="True"
+                            Margin="0,0,0,8"
+                            PreviewMouseWheel="OnCameraViewportPreviewMouseWheel"
+                            MouseLeftButtonDown="OnCameraViewportMouseLeftButtonDown"
+                            MouseMove="OnCameraViewportMouseMove"
+                            MouseLeftButtonUp="OnCameraViewportMouseLeftButtonUp"
+                            LostMouseCapture="OnCameraViewportLostMouseCapture">
+                        <Grid Background="Transparent">
+                            <!-- Mode A: Single Camera High-Resolution Viewport -->
+                            <Grid x:Name="grdSingleViewport"
+                                  Background="Transparent"
+                                  Visibility="{Binding IsSingleCameraMode, Converter={StaticResource BoolToVis}}">
+                                <Image x:Name="imgActivePreview"
+                                       Source="{Binding ActivePreviewImage}"
+                                       Stretch="Uniform"
+                                       RenderOptions.BitmapScalingMode="HighQuality"
+                                       RenderTransformOrigin="0,0">
+                                    <Image.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform x:Name="imgScaleTransform" ScaleX="1" ScaleY="1"/>
+                                            <TranslateTransform x:Name="imgTranslateTransform" X="0" Y="0"/>
+                                        </TransformGroup>
+                                    </Image.RenderTransform>
+                                </Image>
+
+                                <!-- Missing Image Warning Overlay (Requirement E) -->
+                                <Border Background="#D90F172A"
+                                        BorderBrush="{StaticResource WarningBorderBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="8"
+                                        Padding="16,12"
+                                        MaxWidth="360"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        IsHitTestVisible="False"
+                                        Visibility="{Binding IsActiveImageMissing, Converter={StaticResource BoolToVis}}">
+                                    <StackPanel HorizontalAlignment="Center">
+                                        <Path Data="{StaticResource IconWarningGeometry}"
+                                              Width="22" Height="22"
+                                              Stretch="Uniform"
+                                              Fill="{StaticResource WarningTextBrush}"
+                                              HorizontalAlignment="Center"
+                                              Margin="0,0,0,8"/>
+                                        <TextBlock Text="{Binding ActiveMissingImageMessage}"
+                                                   FontSize="12"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{StaticResource WarningTextBrush}"
+                                                   TextAlignment="Center"
+                                                   TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Background="#CC0B0F19"
+                                        BorderBrush="{StaticResource BorderHairlineBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="6"
+                                        Padding="10,4"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Bottom"
+                                        Margin="8"
+                                        IsHitTestVisible="False">
+                                    <TextBlock Text="{Binding ActiveImageStatus}"
+                                               FontSize="11"
+                                               FontWeight="SemiBold"
+                                               Foreground="{StaticResource TextSecondaryBrush}"/>
+                                </Border>
+                            </Grid>
+
+                            <!-- Mode B: Side-by-Side Synchronized Left vs Right Compare Viewport -->
+                            <Grid x:Name="grdSideBySideViewport"
+                                  Background="Transparent"
+                                  Margin="6"
+                                  Visibility="{Binding IsSideBySideMode, Converter={StaticResource BoolToVis}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="6"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Left Camera Compare Pane -->
+                                <Border x:Name="bdrLeftComparePane"
+                                        Grid.Column="0"
+                                        Background="#080C14"
+                                        BorderBrush="{StaticResource BorderHairlineBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="6"
+                                        ClipToBounds="True">
+                                    <Grid>
+                                        <Image Source="{Binding LeftPreviewImage}"
+                                               Stretch="Uniform"
+                                               RenderOptions.BitmapScalingMode="HighQuality"
+                                               RenderTransformOrigin="0,0">
+                                            <Image.RenderTransform>
+                                                <TransformGroup>
+                                                    <ScaleTransform x:Name="leftCompareScaleTransform" ScaleX="1" ScaleY="1"/>
+                                                    <TranslateTransform x:Name="leftCompareTranslateTransform" X="0" Y="0"/>
+                                                </TransformGroup>
+                                            </Image.RenderTransform>
+                                        </Image>
+                                        <Border Background="#CC0B0F19"
+                                                BorderBrush="{StaticResource BorderHairlineBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="4"
+                                                Padding="6,2"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Bottom"
+                                                Margin="6"
+                                                IsHitTestVisible="False">
+                                            <TextBlock Text="{Binding LeftCameraLabel}"
+                                                       FontSize="10.5"
+                                                       FontWeight="Bold"
+                                                       Foreground="{StaticResource AccentCyanBrush}"/>
+                                        </Border>
+                                        <Border Background="#CC0B0F19"
+                                                BorderBrush="{StaticResource BorderHairlineBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="4"
+                                                Padding="6,2"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Bottom"
+                                                MaxWidth="170"
+                                                Margin="6"
+                                                ToolTip="{Binding LeftImageStatus}"
+                                                IsHitTestVisible="False">
+                                            <TextBlock Text="{Binding LeftImageStatus}"
+                                                       FontSize="10"
+                                                       TextTrimming="CharacterEllipsis"
+                                                       Foreground="{StaticResource TextSecondaryBrush}"/>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+
+                                <!-- Right Camera Compare Pane -->
+                                <Border x:Name="bdrRightComparePane"
+                                        Grid.Column="2"
+                                        Background="#080C14"
+                                        BorderBrush="{StaticResource BorderHairlineBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="6"
+                                        ClipToBounds="True">
+                                    <Grid>
+                                        <Image Source="{Binding RightPreviewImage}"
+                                               Stretch="Uniform"
+                                               RenderOptions.BitmapScalingMode="HighQuality"
+                                               RenderTransformOrigin="0,0">
+                                            <Image.RenderTransform>
+                                                <TransformGroup>
+                                                    <ScaleTransform x:Name="rightCompareScaleTransform" ScaleX="1" ScaleY="1"/>
+                                                    <TranslateTransform x:Name="rightCompareTranslateTransform" X="0" Y="0"/>
+                                                </TransformGroup>
+                                            </Image.RenderTransform>
+                                        </Image>
+                                        <Border Background="#CC0B0F19"
+                                                BorderBrush="{StaticResource BorderHairlineBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="4"
+                                                Padding="6,2"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Bottom"
+                                                Margin="6"
+                                                IsHitTestVisible="False">
+                                            <TextBlock Text="{Binding RightCameraLabel}"
+                                                       FontSize="10.5"
+                                                       FontWeight="Bold"
+                                                       Foreground="{StaticResource AccentCyanBrush}"/>
+                                        </Border>
+                                        <Border Background="#CC0B0F19"
+                                                BorderBrush="{StaticResource BorderHairlineBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="4"
+                                                Padding="6,2"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Bottom"
+                                                MaxWidth="170"
+                                                Margin="6"
+                                                ToolTip="{Binding RightImageStatus}"
+                                                IsHitTestVisible="False">
+                                            <TextBlock Text="{Binding RightImageStatus}"
+                                                       FontSize="10"
+                                                       TextTrimming="CharacterEllipsis"
+                                                       Foreground="{StaticResource TextSecondaryBrush}"/>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+
+                            <!-- Floating Compact Defect Inspector Toolbar HUD (Top-Right inside Image Viewport) -->
+                            <Border x:Name="pnlInspectorToolbar"
+                                    Panel.ZIndex="10"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Top"
+                                    Margin="8"
+                                    Padding="5,3"
+                                    Background="#D90F172A"
+                                    BorderBrush="{StaticResource BorderHairlineBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="8"
+                                    Cursor="Arrow"
+                                    MouseLeftButtonDown="OnInspectorToolbarMouseLeftButtonDown">
+                                <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Button Command="{Binding ZoomOutImageCommand}"
+                                            Style="{StaticResource GhostButtonStyle}"
+                                            Padding="6,4"
+                                            ToolTip="{DynamicResource MesDetail_ZoomOutToolTip}">
+                                        <Path Data="{StaticResource IconZoomOutGeometry}"
+                                              Style="{StaticResource VectorIconPathStyle}"
+                                              Width="13" Height="13"
+                                              Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                                    </Button>
+
+                                    <Slider Minimum="1.0"
+                                            Maximum="5.0"
+                                            Value="{Binding ImageZoomFactor, Mode=TwoWay}"
+                                            Width="56"
+                                            VerticalAlignment="Center"
+                                            Margin="2,0,4,0"
+                                            ToolTip="{DynamicResource MesDetail_ZoomSliderToolTip}"/>
+
+                                    <Border Background="{StaticResource SurfaceInputBrush}"
+                                            BorderBrush="{StaticResource BorderHairlineBrush}"
+                                            BorderThickness="1"
+                                            CornerRadius="4"
+                                            Padding="7,2"
+                                            Margin="2,0"
+                                            VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding ImageZoomText}"
+                                                   Style="{StaticResource TabularTextStyle}"
+                                                   FontSize="11"
+                                                   FontWeight="Bold"
+                                                   MinWidth="38"
+                                                   TextAlignment="Center"
+                                                   Foreground="{StaticResource AccentCyanBrush}"/>
+                                    </Border>
+
+                                    <Button Command="{Binding ZoomInImageCommand}"
+                                            Style="{StaticResource GhostButtonStyle}"
+                                            Padding="6,4"
+                                            ToolTip="{DynamicResource MesDetail_ZoomInToolTip}">
+                                        <Path Data="{StaticResource IconZoomInGeometry}"
+                                              Style="{StaticResource VectorIconPathStyle}"
+                                              Width="13" Height="13"
+                                              Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                                    </Button>
+
+                                    <Border Width="1"
+                                            Height="16"
+                                            Background="{StaticResource BorderHairlineBrush}"
+                                            Margin="5,0"/>
+
+                                    <Button Command="{Binding ResetImageZoomCommand}"
+                                            Padding="7,4"
+                                            FontSize="11"
+                                            Margin="0,0,4,0"
+                                            ToolTip="{DynamicResource MesDetail_ZoomFitToolTip}">
+                                        <TextBlock Text="100%" FontWeight="Bold" VerticalAlignment="Center"/>
+                                    </Button>
+
+                                    <Button Command="{Binding OneToOneZoomCommand}"
+                                            Padding="7,4"
+                                            FontSize="11"
+                                            Margin="0,0,4,0"
+                                            ToolTip="{DynamicResource MesDetail_OneToOneToolTip}">
+                                        <Button.Style>
+                                            <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsOneToOneModeActive}" Value="True">
+                                                        <Setter Property="Background" Value="{StaticResource AccentTintBrush}"/>
+                                                        <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+                                                        <Setter Property="Foreground" Value="{StaticResource AccentCyanBrush}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                        <StackPanel Orientation="Horizontal" IsHitTestVisible="False">
+                                            <Path Data="{StaticResource IconZoomResetGeometry}"
+                                                  Style="{StaticResource VectorIconPathStyle}"
+                                                  Width="12" Height="12"
+                                                  Margin="0,0,4,0"
+                                                  Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                                            <TextBlock Text="1:1" FontWeight="Bold" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button>
+
+                                    <Button Command="{Binding ToggleDefectCropCommand}"
+                                            Padding="7,4"
+                                            FontSize="11"
+                                            Margin="0,0,4,0"
+                                            Visibility="{Binding ActiveHasDefectCrop, Converter={StaticResource BoolToVis}}"
+                                            ToolTip="{DynamicResource MesDetail_CropToolTip}">
+                                        <Button.Style>
+                                            <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsShowingDefectCrop}" Value="True">
+                                                        <Setter Property="Background" Value="{StaticResource FailTintBrush}"/>
+                                                        <Setter Property="BorderBrush" Value="{StaticResource FailBrush}"/>
+                                                        <Setter Property="Foreground" Value="{StaticResource FailTextBrush}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                        <TextBlock Text="{DynamicResource MesDetail_CropBtn}" FontWeight="Bold" VerticalAlignment="Center"/>
+                                    </Button>
+
+                                    <Button Command="{Binding ToggleSideBySideCommand}"
+                                            Padding="8,4"
+                                            FontSize="11"
+                                            ToolTip="{DynamicResource MesDetail_SideBySideToolTip}">
+                                        <Button.Style>
+                                            <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsSideBySideMode}" Value="True">
+                                                        <Setter Property="Background" Value="{StaticResource AccentTintBrush}"/>
+                                                        <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+                                                        <Setter Property="Foreground" Value="{StaticResource AccentCyanBrush}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                        <StackPanel Orientation="Horizontal" IsHitTestVisible="False">
+                                            <Path Data="{StaticResource IconCompareSplitGeometry}"
+                                                  Style="{StaticResource VectorIconPathStyle}"
+                                                  Width="12" Height="12"
+                                                  Margin="0,0,5,0"
+                                                  Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                                            <TextBlock Text="{DynamicResource MesDetail_SideBySideBtn}" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button>
+                                </WrapPanel>
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <!-- Dual Camera Thumbnail Strip (Left / Right - shown in Single View) -->
+                    <Grid Grid.Row="2"
+                          Height="124"
+                          Visibility="{Binding IsSingleCameraMode, Converter={StaticResource BoolToVis}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Left Camera Card -->
+                        <Button Grid.Column="0"
+                                Command="{Binding SelectLeftCameraCommand}"
+                                Padding="6"
+                                Margin="0,0,4,0"
+                                HorizontalContentAlignment="Stretch"
+                                VerticalContentAlignment="Stretch">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0"
+                                           Text="{Binding LeftCameraLabel}"
+                                           FontSize="11"
+                                           FontWeight="Bold"
+                                           Foreground="{StaticResource AccentCyanBrush}"
+                                           TextTrimming="CharacterEllipsis"
+                                           Margin="0,0,0,3"/>
+                                <Border Grid.Row="1" Background="#05080F" CornerRadius="4" ClipToBounds="True">
+                                    <Image Source="{Binding LeftThumbnail}"
+                                           Stretch="Uniform"
+                                           RenderOptions.BitmapScalingMode="HighQuality"/>
+                                </Border>
+                                <TextBlock Grid.Row="2"
+                                           Text="{Binding LeftImageStatus}"
+                                           ToolTip="{Binding LeftImageStatus}"
+                                           FontSize="10.5"
+                                           Foreground="{StaticResource TextSecondaryBrush}"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,3,0,0"
+                                           TextTrimming="CharacterEllipsis"/>
+                            </Grid>
+                        </Button>
+
+                        <!-- Right Camera Card -->
+                        <Button Grid.Column="1"
+                                Command="{Binding SelectRightCameraCommand}"
+                                Padding="6"
+                                Margin="4,0,0,0"
+                                HorizontalContentAlignment="Stretch"
+                                VerticalContentAlignment="Stretch">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0"
+                                           Text="{Binding RightCameraLabel}"
+                                           FontSize="11"
+                                           FontWeight="Bold"
+                                           Foreground="{StaticResource AccentCyanBrush}"
+                                           TextTrimming="CharacterEllipsis"
+                                           Margin="0,0,0,3"/>
+                                <Border Grid.Row="1" Background="#05080F" CornerRadius="4" ClipToBounds="True">
+                                    <Image Source="{Binding RightThumbnail}"
+                                           Stretch="Uniform"
+                                           RenderOptions.BitmapScalingMode="HighQuality"/>
+                                </Border>
+                                <TextBlock Grid.Row="2"
+                                           Text="{Binding RightImageStatus}"
+                                           ToolTip="{Binding RightImageStatus}"
+                                           FontSize="10.5"
+                                           Foreground="{StaticResource TextSecondaryBrush}"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,3,0,0"
+                                           TextTrimming="CharacterEllipsis"/>
+                            </Grid>
+                        </Button>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- ================================================================ -->
+        <!-- ROW 2: Footer Bar                                                -->
+        <!-- ================================================================ -->
+        <Grid Grid.Row="2" Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0"
+                       Text="{Binding MesFileLabel}"
+                       ToolTip="{Binding MesLogPath}"
+                       Style="{StaticResource TabularTextStyle}"
+                       Foreground="{StaticResource TextSecondaryBrush}"
+                       FontSize="11.5"
+                       VerticalAlignment="Center"
+                       TextTrimming="CharacterEllipsis"
+                       Margin="0,0,12,0"/>
+
+            <StackPanel Grid.Column="1"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center">
+                <Border Background="{StaticResource PassTintBrush}"
+                        BorderBrush="{StaticResource PassBorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="6"
+                        Padding="9,4"
+                        Margin="0,0,8,0"
+                        VerticalAlignment="Center"
+                        Visibility="{Binding HasCopyStatusMessage, Converter={StaticResource BoolToVis}}">
+                    <TextBlock Text="{Binding CopyStatusMessage}"
+                               Style="{StaticResource TabularTextStyle}"
+                               FontSize="11.5"
+                               FontWeight="SemiBold"
+                               Foreground="{StaticResource PassTextBrush}"/>
+                </Border>
+                <Button Command="{Binding CopyCommand}"
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        Padding="14,6"
+                        Margin="0,0,8,0">
+                    <StackPanel Orientation="Horizontal" IsHitTestVisible="False">
+                        <Path Data="{StaticResource IconCopyGeometry}"
+                              Width="13" Height="13" Stretch="Uniform"
+                              Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                              VerticalAlignment="Center"
+                              Margin="0,0,6,0"/>
+                        <TextBlock Text="{Binding CopyButtonText}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button Command="{Binding CloseCommand}"
+                        Padding="14,6"
+                        IsCancel="True">
+                    <StackPanel Orientation="Horizontal" IsHitTestVisible="False">
+                        <TextBlock Text="{DynamicResource MesDetail_CloseBtn}" VerticalAlignment="Center"/>
+                        <Border Style="{StaticResource KbdBadgeBorderStyle}">
+                            <TextBlock Text="ESC" Style="{StaticResource KbdBadgeTextStyle}"/>
+                        </Border>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
