@@ -1,0 +1,36 @@
+{
+  "_comment": "Override default configuration or add new machines. Delete this file or any key to revert to SettingsService defaults. images[0] = Left camera, images[1] = Right camera.",
+  "machines": [
+    {
+      "name": "MMAPI120",
+      "enabled": true,
+      "color": "#74B9FF",
+      "bgColor": "#1B3B52",
+      "logPath": "\\\\192.168.3.206\\c\\GoArms\\logs\\OTP_1.log",
+      "mesLogPath": "\\\\192.168.3.206\\c\\GoArms\\logs\\MES_1.log",
+      "images": [
+        { "root": "\\\\192.168.3.203\\e\\LOG", "code": "B1" },
+        { "root": "\\\\192.168.3.204\\e\\LOG", "code": "B2" }
+      ]
+    },
+    {
+      "name": "MMAPI110",
+      "enabled": true,
+      "color": "#A29BFE",
+      "bgColor": "#3A2A54",
+      "logPath": "\\\\192.168.3.205\\c\\GoArms\\logs\\OTP_1.log",
+      "mesLogPath": "\\\\192.168.3.205\\c\\GoArms\\logs\\MES_1.log",
+      "images": [
+        { "root": "\\\\192.168.3.201\\e\\LOG", "code": "A1" },
+        { "root": "\\\\192.168.3.202\\e\\LOG", "code": "A2" }
+      ]
+    }
+  ],
+  "autoShiftExport": {
+    "enabled": true,
+    "dayShiftStart": "08:30",
+    "nightShiftStart": "20:30",
+    "dayShiftTime": "20:30",
+    "nightShiftTime": "08:30"
+  }
+}

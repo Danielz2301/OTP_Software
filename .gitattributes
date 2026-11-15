@@ -1,0 +1,9 @@
+# Preserve CRLF without auto-conversion by Git: PowerShell 5.1 + BOM + CRLF is project standard (see .editorconfig).
+*.cs    text eol=crlf
+*.props text eol=crlf
+*.xaml  text eol=crlf
+*.bat   text eol=crlf
+*.md    text eol=crlf
+*.json  text eol=crlf
+*.yml   text eol=crlf
+*.log   -text
